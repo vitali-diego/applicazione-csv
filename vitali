@@ -1,0 +1,71 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+using namespace std;
+
+	
+struct Location{
+	double Lat;
+	double Lon;	
+}
+struct zoneBG {
+	string ClasseToponimo;
+	string DescrizioneToponimo;
+	string Numero;
+	string Subalterno;
+	int CAP;
+	int SezioneISTAT;
+	Location posto;
+}
+void carica_dati(){
+//apri file / controlla se esiste / se si carichiamo i dati 
+int i=0;
+ifstream fileInput("Comune_Bergamo_-_Numerazione_civica.csv");
+	string linea;
+    if (fileInput.is_open()) {
+        while (fileInput>>linea && i<10){
+        	i++;
+        }
+        fileInput.close(); 
+    } else {
+        cout << "Impossibile aprire il file";
+    }
+}
+void visualizza(){
+
+
+}
+int main(int argc, char** argv) {
+    do{
+//visualizzazione opzioni
+cout<<"1 - (C)Carica dati"<<endl;
+cout<<"2 - (R)Visualizzazione"<<endl;
+cout<<"0 - Fine programma"<<endl;
+//scelta dell'opzione
+cout<<"scegli l'opzione";
+
+cin>>scelta;
+fflush(stdin);
+//elaborazione scelta
+switch(scelta){
+	case 1:
+		cout<<"Inserisci il nome ";
+		getline(cin,p.nome);
+		cout<<"Inserisci la categoria ";
+		getline(cin,p.categoria);
+		cout<<"Inserisci il prezzo ";
+		cin>>p.prezzo;
+		aggiungi(p,elenco,n);
+		break;
+	case 2: 
+		
+	    cout<<visualizza(elenco,n);
+		break;	
+	
+}
+}
+while (scelta!=0);
+	
+	return 0;
+}
+//{}
