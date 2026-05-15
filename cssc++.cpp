@@ -48,12 +48,31 @@ ifstream fileInput("Comune_Bergamo_-_Numerazione_civica.csv");
         resto = -1;
     }
 }
-void visualizza(){
+string visualizza(int n, zoneBG y[], int bin) {
+    if (n <= 0) {
+    	
+        return "";
+    }
+	else{
+    string s = "";
+    for (int i = 0; i < n; i++) {
+        s += "Zona " + to_string(i + 1) + ":\n";
+        s += "  Indirizzo: " + y[i].ClasseToponimo + " " + y[i].DescrizioneToponimo + ", " + to_string(y[i].Numero) + "\n";
+        s += "  CAP: " + to_string(y[i].CAP) + " | Sezione ISTAT: " + to_string(y[i].SezioneISTAT) + "\n";
+        s += "  Coordinate: (" + to_string(y[i].posto.Lat) + " , " + to_string(y[i].posto.Lon) + ")\n";
+        s += "---------------------------\n";
+    }
+    
+    return s;
+	}
+}
 
 
+
+    return output;
 }
 int main(int argc, char** argv) {
-int n;
+int n,bin = 0;
 zoneBG elenco[n];
 int scelta;
     do{
@@ -76,13 +95,14 @@ switch(scelta){
 		if (resto == -1)
 		cout<<"file non eseguibile"<<endl;
 		break;
-	//case 2: 
-		
-//		break;	
+	case 2: 
+		visualizza(n,elenco,bin)
+		if (bin == -1)
+		cout<<"non cè nulla da stampare"<<endl;
+		break;	
 }
 }while (scelta!=0);
 	
 	return 0;
 } 
 //{}
-
