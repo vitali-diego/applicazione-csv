@@ -19,11 +19,72 @@ struct zoneBG {
     int SezioneISTAT;
     Location posto;
 };
+int numeroToInt(const string &s) {
+    if (s.empty()) return 0;
+    return stoi(s);
+}
+void swap(zoneBG &a, zoneBG &b) {
+    zoneBG temp = a;
+    a = b;
+    b = temp;
+}
+int partition(zoneBG arr[], int low, int high) {
+    int pivot = numeroToInt(arr[high].Numero);
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (numeroToInt(arr[j].Numero) <= pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+void quicksort(zoneBG arr[], int low, int high) {
+    if (low < high) {
+        int pi = partition(arr, low, high);
+        quicksort(arr, low, pi - 1);
+        quicksort(arr, pi + 1, high);
+    }
+}
+void ordina_via(zoneBG elenco[], int n, string via) {
+	//trovati lo utilizziamo come array di record
+    zoneBG trovati[1000];
+    // per contare quanti record vediamo
+    int k = 0;
+    int i = 0;
+    // passiamo tutto l'array
+    while (i < n) {
+        if (elenco[i].DescrizioneToponimo == via) {
+            trovati[k] = elenco[i];
+            k++;
+        }
+        i++;
+    }
+	// se non si trova alcun riscontro con la via diigtata si interrompe la funzione
+    if (k == 0) {
+        return;
+    }
+	//richiamiamo il quicksort per mettere in ordine le vie trovate per numero civico
+    quicksort(trovati, 0, k - 1);
+
+    cout << "\nTrovati " << k << " record per la via \"" << via << "\"\n";
+    cout << "Ordinati per numero civico:\n\n";
+
+    i = 0;
+    while (i < k) {
+        cout << trovati[i].DescrizioneToponimo << " "
+             << trovati[i].Numero << " (CAP " << trovati[i].CAP << ")\n";
+        i++;
+    }
+}
 
 
 void carica_dati(int n, zoneBG y[], int &resto) {
     ifstream fileInput("Comune_Bergamo_-_Numerazione_civica.csv");
-    //se non Ã¨ aperto si ritorna il resto -1, cosi che esca il messaggio di errore nel main
+    //se non è aperto si ritorna il resto -1, cosi che esca il messaggio di errore nel main
     if (!fileInput.is_open()) {
         resto = -1;
         return;
@@ -47,7 +108,7 @@ void carica_dati(int n, zoneBG y[], int &resto) {
         getline(ss, campo, ',');
         if (campo.empty()) y[i].CAP = 0;
         else y[i].CAP = stoi(campo);
-        // leggiamo e convertiamo se Ã¨ persente un valore e lo facciamo per i prossimi valori
+        // leggiamo e convertiamo se è persente un valore e lo facciamo per i prossimi valori
         getline(ss, campo, ',');
         if (campo.empty()) y[i].SezioneISTAT = 0;
         else y[i].SezioneISTAT = stoi(campo);
@@ -129,11 +190,18 @@ int main(int argc, char** argv) {
                     cout<<visualizza(n,elenco);
                 }
                 break;   
-            case 3:
-            //	cout<<"inserisci la via interessata"<<endl;
-            //	cin>>
-            case 0:
-                break;
+            case 3:{
+    		if (n <= 0) {
+       			cout << "Carica prima i dati"<<endl;
+        		break;
+    		} string via;
+    		cout << "Inserisci la via da cercare: ";
+    		cin.ignore();
+    		getline(cin, via);
+    		ordina_via(elenco, n, via);
+    		}
+           // case 0:
+            //    break;
         }
     } while (scelta != 0);
     
