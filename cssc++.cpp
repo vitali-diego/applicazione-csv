@@ -20,9 +20,15 @@ struct zoneBG {
     Location posto;
 };
 int numeroToInt(const string &s) {
-    if (s.empty()) return 0;
-    return stoi(s);
+    string num = "";
+    for (char c : s) {
+        if (isdigit(c)) num += c;
+        else break;
+    }
+    if (num.empty()) return 0;
+    return stoi(num);
 }
+
 void swap(zoneBG &a, zoneBG &b) {
     zoneBG temp = a;
     a = b;
@@ -84,7 +90,7 @@ void ordina_via(zoneBG elenco[], int n, string via) {
 
 void carica_dati(int n, zoneBG y[], int &resto) {
     ifstream fileInput("Comune_Bergamo_-_Numerazione_civica.csv");
-    //se non è aperto si ritorna il resto -1, cosi che esca il messaggio di errore nel main
+    //se non Ã¨ aperto si ritorna il resto -1, cosi che esca il messaggio di errore nel main
     if (!fileInput.is_open()) {
         resto = -1;
         return;
@@ -108,7 +114,7 @@ void carica_dati(int n, zoneBG y[], int &resto) {
         getline(ss, campo, ',');
         if (campo.empty()) y[i].CAP = 0;
         else y[i].CAP = stoi(campo);
-        // leggiamo e convertiamo se è persente un valore e lo facciamo per i prossimi valori
+        // leggiamo e convertiamo se Ã¨ persente un valore e lo facciamo per i prossimi valori
         getline(ss, campo, ',');
         if (campo.empty()) y[i].SezioneISTAT = 0;
         else y[i].SezioneISTAT = stoi(campo);
@@ -196,7 +202,9 @@ int main(int argc, char** argv) {
         		break;
     		} string via;
     		cout << "Inserisci la via da cercare: ";
-    		cin.ignore();
+    		//attenzone, inserire la via che si vuole escludendo la parola VIA e replicando perfettamente il testo
+    		// es se io voglio VIA ARENA, digito solo ARENA
+    		cin.ignore(10000, '\n');
     		getline(cin, via);
     		ordina_via(elenco, n, via);
     		}
